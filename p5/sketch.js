@@ -15,6 +15,7 @@ function setup() {
 	createCanvas(windowWidth, windowHeight);
 	setupOsc(12000, 3334);
 	background(0);
+	blendMode(LIGHTEST);
 	palette = [color(0, 126, 255, 100), color(213, 4, 217, 100), color(242, 105, 56, 100), color(85, 0, 194, 100),
 	color(125, 122, 191, 100), color(255, 234, 43, 100), color(122, 245, 200, 100),
 	color(255, 4, 217, 100), color(242, 100, 30, 100), color(75, 0, 150, 100),
