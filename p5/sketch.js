@@ -16,12 +16,12 @@ function setup() {
 	setupOsc(12000, 3334);
 	background(0);
 	blendMode(LIGHTEST);
-	palette = [color(0, 126, 255, 100), color(213, 4, 217, 100), color(242, 105, 56, 100), color(85, 0, 194, 100),
+	palette = [color(0, 126, 255, 100), color(213, 4, 217, 100), color(242, 105, 56, 100), color(10, 126, 255, 100),
 	color(125, 122, 191, 100), color(255, 234, 43, 100), color(122, 245, 200, 100),
 	color(255, 4, 217, 100), color(242, 100, 30, 100), color(75, 0, 150, 100),
 	color(180, 194, 30, 100), color(140, 245, 200, 100), color(90, 126, 255, 100), color(213, 145, 217, 100),
 	color(242, 15, 50, 100), color(85, 30, 194, 100), color(125, 100, 191, 100), color(130, 194, 30, 100),
-	color(122, 245, 210, 100), color(10, 126, 255, 100), color(255, 4, 200, 100), color(220, 100, 30, 100),
+	color(122, 245, 210, 100), color(255, 4, 200, 100), color(220, 100, 30, 100),
 	color(80, 5, 150, 100), color(130, 100, 120, 100), color(180, 170, 30, 100), color(140, 245, 190, 100),
 	color(70, 180, 255, 100), color(200, 4, 217, 100), color(230, 105, 56, 100), color(85, 0, 160, 100),];
 
@@ -37,7 +37,10 @@ function setup() {
 	for (let y = 0; y < (height / sq) - 1; y++) {
 		for (let x = 0; x < (width / sq) - 1; x++) {
 			grid.push(createVector(x * sq + x_start, y * sq + y_start));
-			// rect(x * sq + x_start, y * sq + y_start, sq, sq);
+			// visible grid:
+			noFill();
+			stroke(255);
+			rect(x * sq + x_start, y * sq + y_start, sq, sq);
 		}
 	}
 }
@@ -190,8 +193,41 @@ function three() {
 	// rect(x,y,sq,sq);
 	c1 = palette[3];
 	c2 = color(0);
-	setGradient(x, y, sq / 2, sq / 2, c1, c2, X_AXIS);
+
+	let choose = floor(random(4));
+	switch (choose) {
+		case 0:
+			fill(palette[3]);
+			bumps(x, y, sq / 3);
+			break;
+		case 1:
+			push();
+			fill(palette[3]);
+			translate(x + sq, y + sq);
+			rotate(PI);
+			x = 0;
+			y = 0;
+			bumps(x, y, sq / 3);
+			pop();
+			break;
+		case 2:
+			fill(palette[3]);
+			bumps(x, y, sq / 3 / 2);
+			break;
+		case 3:
+			setGradient(x, y, sq, sq / 2, c1, c2, X_AXIS);
+			break;
+
+	}
 	pop();
+}
+
+function bumps(x, y, size) {
+	arc(x, y + size, 2 * size, 2 * size, PI + HALF_PI, 0);
+	arc(x + size, y + 2 * size, 2 * size, 2 * size, PI + HALF_PI, 0);
+	arc(x + 2 * size, y + 3 * size, 2 * size, 2 * size, PI + HALF_PI, 0);
+	rect(x, y + 2 * size, 2 * size, size);
+	rect(x, y + size, size, size);
 }
 
 function four() {
@@ -270,10 +306,10 @@ function five() {
 			}
 			break;
 		case 2:
-			arc(x+sq, y, sq, sq, HALF_PI, PI);
+			arc(x + sq, y, sq, sq, HALF_PI, PI);
 			break;
 		case 3:
-			arc(x, y, sq/2, sq/2, 0, HALF_PI);
+			arc(x, y, sq / 2, sq / 2, 0, HALF_PI);
 			break;
 
 		default:
@@ -425,7 +461,7 @@ function twelve() {
 	// arc(x+sq, y, sq * 2, sq * 2, HALF_PI, PI);
 	// arc(x+sq, y+sq, sq * 2, sq * 2, PI, PI + HALF_PI);
 	// arc(x, y+sq, sq * 2, sq * 2, PI + HALF_PI, 0);
-	ellipse(x+sq/2,y+sq/2,sq,sq);
+	ellipse(x + sq / 2, y + sq / 2, sq, sq);
 	pop();
 }
 
