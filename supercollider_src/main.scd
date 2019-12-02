@@ -3,19 +3,20 @@
 (
 NetAddr.disconnectAll;
 ~sensorValues = 100!12;
-~sensorThreshold = 100;
-~visosc = NetAddr.new("127.0.0.1", 7772);
+~sensorThreshold = [35, 40, 30, 40, 50, 40, 50, 40, 45, 40, 19, 20];
+// ~visosc = NetAddr.new("127.0.0.1", 7772);
+~visosc = NetAddr.new("192.168.1.6", 7772);
 o = OSCFunc({
-	arg msg, time, addr, recvPort, change, filterAmount = 0.9;
+	arg msg, time, addr, recvPort, change, filterAmount = 0.9, show = 11;
 	// msg.postln;
 	// if(msg[1] == 0) {[msg, time, addr, recvPort].postln; };
 	// low pass filter
 	change = msg[2] - ~sensorValues[msg[1]];
 	~sensorValues[msg[1]] = (~sensorValues[msg[1]]*filterAmount) + (change * (1-filterAmount));
 
-	if(msg[1] == 0) { ~sensorValues[0].postln; };
+	if(msg[1] == show) { ~sensorValues[show].postln; };
 
-	~poets[msg[1]].updateState(~sensorValues[msg[1]]<~sensorThreshold);
+	~poets[msg[1]].updateState(~sensorValues[msg[1]]<~sensorThreshold[msg[1]]);
 
 }, '/touched', nil, 7771);
 
@@ -23,6 +24,7 @@ o = OSCFunc({
 	arg msg, time, addr, recvPort, touched, sensors = false!12;
 	// if(msg[1] == 0) {[msg, time, addr, recvPort].postln; };
 	// low pass filter
+
 
 	// check if each bit is set
 	12.do { arg i;
@@ -83,7 +85,7 @@ o = OSCFunc({
 
 
 // ----------------------------------------------------------- POET FACTORY
-~minTimeBetweenTouches = 0.5;
+~minTimeBetweenTouches = 0.125;
 ~timeDisabled = 2.0;
 ~numSensorsBeingTouched = 0;
 ~maxSensorsTouched = 2;
@@ -102,8 +104,8 @@ o = OSCFunc({
 		// ----------------- methods
 		// this method is called whenever a new sensor value is received
 		updateState: { | self, touched |
-			~visosc.sendMsg("/touched", self.index, touched); // send to p5 for visuals creation
 			if(touched, {
+
 				// the sensor is being touched
 				if(self.touched != true) {
 					if(~now.() - self.touchStart > ~minTimeBetweenTouches
@@ -118,7 +120,9 @@ o = OSCFunc({
 							// sonify it
 							~sonifyTouch.(self.index);
 							~processingOsc.sendMsg("/edit");
+
 							~numSensorsBeingTouched = ~numSensorsBeingTouched + 1;
+							~visosc.sendMsg("/touched", self.index, touched); // send to p5 for visuals creation
 						}, {
 							// FAILURE
 							~sonifyFailed.(self.index);

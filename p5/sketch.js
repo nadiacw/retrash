@@ -4,7 +4,7 @@ var startColor, newColor;
 let palette;
 
 let grid = [];
-let sq = 200;
+let sq = 600;
 let x_start, y_start, x_end, y_end;
 
 const Y_AXIS = 1;
