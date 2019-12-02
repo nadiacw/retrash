@@ -4,7 +4,7 @@ var startColor, newColor;
 let palette;
 
 let grid = [];
-let sq = 200;
+let sq = 300;
 let x_start, y_start, x_end, y_end;
 
 const Y_AXIS = 1;
@@ -124,7 +124,7 @@ function one() {
 	let pos = grid[floor(random(grid.length))];
 	let x = pos.x + (sq / 2);
 	let y = pos.y + (sq / 2);
-	ellipse(x, y, 30, 30);
+	ellipse(x, y, sq/6, sq/6);
 	// ellipse(x + random(20), y + random(20), 60, 60);
 	// ellipse(x - random(20), y - random(20), 30, 30);
 	// ellipse(x + random(20), y - random(20), 10, 10);
@@ -510,8 +510,8 @@ function black() {
 	blendMode(MULTIPLY);
 
 	fill(0);
-	// let choose = floor(random(9));
-	let choose = 4;
+	let choose = floor(random(9));
+	// let choose = 4;
 	switch (choose) {
 		case 0:
 			// first row
@@ -541,9 +541,6 @@ function black() {
 			// corner
 			y = y_end;
 			x = x_end;
-			rect(x - sq, y - sq, sq, sq);
-			rect(x - 2 * sq, y - sq, sq, sq);
-			rect(x - sq, y - 2 * sq, sq, sq);
 			beginShape();
 			vertex(x + 1 + - sq, y + 1 - sq);
 			for (var i = 0; i < HALF_PI; i += PI / 50) {
@@ -551,14 +548,14 @@ function black() {
 			}
 			vertex(x + 1 - sq, y + 1 - sq);
 			endShape();
+			rect(x - sq, y - sq, sq, sq);
+			rect(x - 2 * sq, y - sq, sq, sq);
+			rect(x - sq, y - 2 * sq, sq, sq);
 			break;
 		case 5:
 			// corner
 			y = y_start;
 			x = x_start;
-			rect(x, y, sq, sq);
-			rect(x + sq, y, sq, sq);
-			rect(x, y + sq, sq, sq);
 			beginShape();
 			vertex(x + sq, y + sq);
 			for (var i = PI; i < PI + HALF_PI; i += PI / 50) {
@@ -566,6 +563,9 @@ function black() {
 			}
 			vertex(x + sq, y + sq);
 			endShape();
+			rect(x, y, sq, sq);
+			rect(x + sq, y, sq, sq);
+			rect(x, y + sq, sq, sq);
 			break;
 		case 6:
 			beginShape();
