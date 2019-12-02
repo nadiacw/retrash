@@ -4,6 +4,7 @@
 (
 ~sensorValues = 100!12;
 ~sensorThreshold = 7;
+~visosc = NetAddr.new("127.0.0.1", 7772);
 o = OSCFunc({
 	arg msg, time, addr, recvPort, change, filterAmount = 0.9;
 	// if(msg[1] == 0) {[msg, time, addr, recvPort].postln; };
@@ -100,6 +101,7 @@ o = OSCFunc({
 		// ----------------- methods
 		// this method is called whenever a new sensor value is received
 		updateState: { | self, touched |
+			~visosc.sendMsg("/touched", self.index, touched); // send to p5 for visuals creation
 			if(touched, {
 				// the sensor is being touched
 				if(self.touched != true) {
@@ -120,6 +122,7 @@ o = OSCFunc({
 							// FAILURE
 							~sonifyFailed.(self.index);
 							~disabledTimestamp = ~now.();
+							~visosc.sendMsg("/failure");
 						});
 					};
 				};
