@@ -1,18 +1,19 @@
 
 // Receive via OSC
-
 (
+NetAddr.disconnectAll;
 ~sensorValues = 100!12;
-~sensorThreshold = 7;
+~sensorThreshold = 100;
 ~visosc = NetAddr.new("127.0.0.1", 7772);
 o = OSCFunc({
 	arg msg, time, addr, recvPort, change, filterAmount = 0.9;
+	// msg.postln;
 	// if(msg[1] == 0) {[msg, time, addr, recvPort].postln; };
 	// low pass filter
 	change = msg[2] - ~sensorValues[msg[1]];
 	~sensorValues[msg[1]] = (~sensorValues[msg[1]]*filterAmount) + (change * (1-filterAmount));
 
-	//if(msg[1] == 0) { ~sensorValues[0].postln; };
+	if(msg[1] == 0) { ~sensorValues[0].postln; };
 
 	~poets[msg[1]].updateState(~sensorValues[msg[1]]<~sensorThreshold);
 
