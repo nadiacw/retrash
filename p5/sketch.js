@@ -545,11 +545,11 @@ function black() {
 			rect(x - 2 * sq, y - sq, sq, sq);
 			rect(x - sq, y - 2 * sq, sq, sq);
 			beginShape();
-			vertex(x+1 + - sq, y+1 - sq);
+			vertex(x + 1 + - sq, y + 1 - sq);
 			for (var i = 0; i < HALF_PI; i += PI / 50) {
-				vertex(x +1 - 2 * sq + sin(i) * sq, y+1 - 2 * sq + cos(i) * sq);
+				vertex(x + 1 - 2 * sq + sin(i) * sq, y + 1 - 2 * sq + cos(i) * sq);
 			}
-			vertex(x+1 - sq, y+1 - sq);
+			vertex(x + 1 - sq, y + 1 - sq);
 			endShape();
 			break;
 		case 5:
@@ -590,7 +590,7 @@ function black() {
 			beginShape();
 			vertex(x, y);
 			for (var i = HALF_PI; i < PI; i += PI / 50) {
-				vertex(x + 1 - sq + sin(i) * sq, y + 1 +sq + cos(i) * sq);
+				vertex(x + 1 - sq + sin(i) * sq, y + 1 + sq + cos(i) * sq);
 			}
 			vertex(x, y);
 			endShape();
@@ -619,9 +619,53 @@ function receiveOsc(address, value) {
 	// 	x = value[0];
 	// 	y = value[1];
 	// }
+	if (address == '/failure') {
+		black();
+	}
+
 	if (address == '/touched') {
-		touches = value;
-		console.log(touches);
+		if (value == 1) {
+			if (value[0] == 0) {
+				zero();
+			}
+			if (value[0] == 1) {
+				one();
+			}
+			if (value[0] == 2) {
+				two();
+			}
+			if (value[0] == 3) {
+				three();
+			}
+			if (value[0] == 4) {
+				four();
+			}
+			if (value[0] == 5) {
+				five();
+			}
+			if (value[0] == 6) {
+				six();
+			}
+			if (value[0] == 7) {
+				seven();
+			}
+			if (value[0] == 8) {
+				eight();
+			}
+			if (value[0] == 9) {
+				nine();
+			}
+			if (value[0] == 10) {
+				ten();
+			}
+			if (value[0] == 11) {
+				eleven();
+			}
+			if (value[0] == 12) {
+				twelve();
+			}
+		}
+
 
 	}
 }
