@@ -624,7 +624,7 @@ function receiveOsc(address, value) {
 	}
 
 	if (address == '/touched') {
-		if (value == 1) {
+		if (value[1] == 1) {
 			if (value[0] == 0) {
 				zero();
 			}
