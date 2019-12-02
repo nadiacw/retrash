@@ -13,7 +13,7 @@ let c1, c2;
 
 function setup() {
 	createCanvas(windowWidth, windowHeight);
-	setupOsc(12000, 3334);
+	setupOsc(7772, 3334);
 	background(0);
 	blendMode(LIGHTEST);
 	palette = [color(0, 126, 255, 100), color(213, 4, 217, 100), color(242, 105, 56, 100), color(10, 126, 255, 100),
@@ -510,8 +510,8 @@ function black() {
 	blendMode(MULTIPLY);
 
 	fill(0);
-	let choose = floor(random(9));
-	// let choose = 8;
+	// let choose = floor(random(9));
+	let choose = 4;
 	switch (choose) {
 		case 0:
 			// first row
@@ -545,11 +545,11 @@ function black() {
 			rect(x - 2 * sq, y - sq, sq, sq);
 			rect(x - sq, y - 2 * sq, sq, sq);
 			beginShape();
-			vertex(x + - sq, y - sq);
+			vertex(x+1 + - sq, y+1 - sq);
 			for (var i = 0; i < HALF_PI; i += PI / 50) {
-				vertex(x + 1 - 2 * sq + sin(i) * sq, y - 2 * sq + cos(i) * sq);
+				vertex(x +1 - 2 * sq + sin(i) * sq, y+1 - 2 * sq + cos(i) * sq);
 			}
-			vertex(x - sq, y - sq);
+			vertex(x+1 - sq, y+1 - sq);
 			endShape();
 			break;
 		case 5:
@@ -631,7 +631,7 @@ function sendOsc(address, value) {
 }
 
 function setupOsc(oscPortIn, oscPortOut) {
-	var socket = io.connect('http://127.0.0.1:7772', { port: 7772, rememberTransport: false });
+	var socket = io.connect('http://127.0.0.1:8081', { port: 8081, rememberTransport: false });
 	socket.on('connect', function () {
 		socket.emit('config', {
 			server: { port: oscPortIn, host: '127.0.0.1' },
