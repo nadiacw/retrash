@@ -46,9 +46,10 @@ function setup() {
 }
 
 function draw() {
-	if (touches[0] == 1) {
-		// one touched
-	}
+	// if (touches[0] == 1) {
+	// 	// one touched
+	// 	one();
+	// }
 }
 
 // FOR DEBUGGING
@@ -97,12 +98,18 @@ function keyTyped() {
 		clear();
 		background(0);
 	}
+	if (key === '0') {
+		background(255);
+	}
+	if (key === '1') {
+		black();
+	}
 }
 
 function zero() {
 	push();
 	noStroke();
-	fill(palette[0]);
+	fill(palette[13]);
 	let pos = grid[floor(random(grid.length))];
 	let x = pos.x;
 	let y = pos.y;
@@ -408,10 +415,38 @@ function nine() {
 	let pos = grid[floor(random(grid.length))];
 	let x = pos.x;
 	let y = pos.y;
-	// rect(x,y,sq,sq);
-	c1 = palette[9];
-	c2 = color(0);
-	setGradient(x, y, sq, sq, c1, c2, X_AXIS);
+
+
+	let choose = floor(random(4));
+	switch (choose) {
+		case 0:
+			c1 = palette[9];
+			c2 = color(0);
+			setGradient(x, y, sq, sq, c2, c1, X_AXIS);
+			break;
+		case 1:
+			c1 = palette[14];
+			c2 = color(0);
+			setGradient(x, y, sq, sq, c1, c2, X_AXIS);
+			break;
+		case 2:
+			c1 = palette[9];
+			c2 = color(0);
+			setGradient(x, y, sq / 2, sq / 2, c1, c2, X_AXIS);
+			break;
+		case 3:
+			c1 = palette[9];
+			c2 = color(0);
+			setGradient(x + sq / 2, y + sq / 2, sq / 2, sq / 2, c2, c1, X_AXIS);
+			break;
+		default:
+			break;
+	}
+
+
+
+
+	// arc(x,y,sq,0,HALF_PI);
 	pop();
 }
 function ten() {
@@ -465,18 +500,129 @@ function twelve() {
 	pop();
 }
 
+function black() {
+	push();
+	noStroke();
+	let pos = grid[floor(random(grid.length))];
+	let x = pos.x;
+	let y = pos.y;
+
+	blendMode(MULTIPLY);
+
+	fill(0);
+	let choose = floor(random(9));
+	// let choose = 8;
+	switch (choose) {
+		case 0:
+			// first row
+			y = y_start;
+			rect(x, y, sq, sq);
+			break;
+		case 1:
+			// last row
+			y = y_end - sq;
+			rect(x, y, sq, sq);
+			arc(x, y, sq * 2, sq * 2, 0, HALF_PI);
+			break;
+		case 2:
+			// last col
+			x = x_end - sq;
+			rect(x, y, sq, sq);
+			// arc(x + sq, y, sq * 2, sq * 2, 0, HALF_PI);
+			break;
+			break;
+		case 3:
+			// first col
+			x = x_start;
+			rect(x, y, sq, sq);
+			// arc(x + sq, y, sq * 2, sq * 2, 0, HALF_PI);
+			break;
+		case 4:
+			// corner
+			y = y_end;
+			x = x_end;
+			rect(x - sq, y - sq, sq, sq);
+			rect(x - 2 * sq, y - sq, sq, sq);
+			rect(x - sq, y - 2 * sq, sq, sq);
+			beginShape();
+			vertex(x + - sq, y - sq);
+			for (var i = 0; i < HALF_PI; i += PI / 50) {
+				vertex(x + 1 - 2 * sq + sin(i) * sq, y - 2 * sq + cos(i) * sq);
+			}
+			vertex(x - sq, y - sq);
+			endShape();
+			break;
+		case 5:
+			// corner
+			y = y_start;
+			x = x_start;
+			rect(x, y, sq, sq);
+			rect(x + sq, y, sq, sq);
+			rect(x, y + sq, sq, sq);
+			beginShape();
+			vertex(x + sq, y + sq);
+			for (var i = PI; i < PI + HALF_PI; i += PI / 50) {
+				vertex(x - 1 + 2 * sq + sin(i) * sq, y - 1 + 2 * sq + cos(i) * sq);
+			}
+			vertex(x + sq, y + sq);
+			endShape();
+			break;
+		case 6:
+			beginShape();
+			vertex(x + sq, y + sq);
+			for (var i = PI; i < PI + HALF_PI; i += PI / 50) {
+				vertex(x - 1 + 2 * sq + sin(i) * sq, y - 1 + 2 * sq + cos(i) * sq);
+			}
+			vertex(x + sq, y + sq);
+			endShape();
+			beginShape();
+			vertex(x - sq, y - sq);
+			for (var i = 0; i < HALF_PI; i += PI / 50) {
+				vertex(x + 1 - 2 * sq + sin(i) * sq, y + 1 - 2 * sq + cos(i) * sq);
+			}
+			vertex(x - sq, y - sq);
+			endShape();
+			break;
+		case 7:
+			rect(x, y, sq, sq);
+			break;
+		case 8:
+			beginShape();
+			vertex(x, y);
+			for (var i = HALF_PI; i < PI; i += PI / 50) {
+				vertex(x + 1 - sq + sin(i) * sq, y + 1 +sq + cos(i) * sq);
+			}
+			vertex(x, y);
+			endShape();
+			break;
+		default:
+			break;
+	}
+
+	blendMode(LIGHTEST);
+	pop();
+}
+function customArc(x, y, w, h, start, stop, resolution) {
+	beginShape();
+	for (var i = start; i < stop; i += resolution) {
+		vertex(x + sin(i) * w, y + cos(i) * h);
+	}
+	endShape();
+}
 
 // OSC stuff
 
 function receiveOsc(address, value) {
 	console.log("received OSC: " + address + ", " + value);
 
-	if (address == '/test') {
-		x = value[0];
-		y = value[1];
-	}
-	if (address == '/touch') {
+	// if (address == '/test') {
+	// 	x = value[0];
+	// 	y = value[1];
+	// }
+	if (address == '/touched') {
 		touches = value;
+		console.log(touches);
+
 	}
 }
 
@@ -485,7 +631,7 @@ function sendOsc(address, value) {
 }
 
 function setupOsc(oscPortIn, oscPortOut) {
-	var socket = io.connect('http://127.0.0.1:8081', { port: 8081, rememberTransport: false });
+	var socket = io.connect('http://127.0.0.1:7772', { port: 7772, rememberTransport: false });
 	socket.on('connect', function () {
 		socket.emit('config', {
 			server: { port: oscPortIn, host: '127.0.0.1' },
@@ -511,19 +657,19 @@ function setGradient(x, y, w, h, c1, c2, axis) {
 
 	if (axis === Y_AXIS) {
 		// Top to bottom gradient
-		for (let i = y; i <= y + h; i++) {
+		for (let i = y - 1; i <= y - 2 + h; i++) {
 			let inter = map(i, y, y + h, 0, 1);
 			let c = lerpColor(c1, c2, inter);
 			stroke(c);
-			line(x, i, x + w, i);
+			line(x, i, x - 1 + w, i);
 		}
 	} else if (axis === X_AXIS) {
 		// Left to right gradient
-		for (let i = x; i <= x + w; i++) {
+		for (let i = x; i <= x - 1 + w; i++) {
 			let inter = map(i, x, x + w, 0, 1);
 			let c = lerpColor(c1, c2, inter);
 			stroke(c);
-			line(i, y, i, y + h);
+			line(i, y, i, y - 1 + h);
 		}
 	}
 }
