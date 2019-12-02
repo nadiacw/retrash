@@ -46,9 +46,10 @@ function setup() {
 }
 
 function draw() {
-	if (touches[0] == 1) {
-		// one touched
-	}
+	// if (touches[0] == 1) {
+	// 	// one touched
+	// 	one();
+	// }
 }
 
 // FOR DEBUGGING
@@ -614,13 +615,14 @@ function customArc(x, y, w, h, start, stop, resolution) {
 function receiveOsc(address, value) {
 	console.log("received OSC: " + address + ", " + value);
 
-	if (address == '/test') {
-		x = value[0];
-		y = value[1];
-	}
-	if (address == '/touch') {
+	// if (address == '/test') {
+	// 	x = value[0];
+	// 	y = value[1];
+	// }
+	if (address == '/touched') {
 		touches = value;
 		console.log(touches);
+
 	}
 }
 
