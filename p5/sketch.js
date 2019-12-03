@@ -510,8 +510,8 @@ function black() {
 	blendMode(MULTIPLY);
 
 	fill(0);
-	let choose = floor(random(9));
-	// let choose = 4;
+	let choose = floor(random(8));
+	// let choose = 8;
 	switch (choose) {
 		case 0:
 			// first row
@@ -522,7 +522,7 @@ function black() {
 			// last row
 			y = y_end - sq;
 			rect(x, y, sq, sq);
-			arc(x, y, sq * 2, sq * 2, 0, HALF_PI);
+			// arc(x, y, sq * 2, sq * 2, 0, HALF_PI);
 			break;
 		case 2:
 			// last col
@@ -590,7 +590,7 @@ function black() {
 			beginShape();
 			vertex(x, y);
 			for (var i = HALF_PI; i < PI; i += PI / 50) {
-				vertex(x + 1 - sq + sin(i) * sq, y + 1 + sq + cos(i) * sq);
+				vertex(x - sq + sin(i) * sq, y + sq + cos(i) * sq);
 			}
 			vertex(x, y);
 			endShape();
